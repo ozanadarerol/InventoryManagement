@@ -16,43 +16,67 @@ public class InventoryManagementSystem {
             System.out.println("7. Exit");
             System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            int id;
+            if (scanner.hasNextInt()) {
+                int choice = scanner.nextInt();
+                int id;
+                int stock;
 
-            switch (choice) {
-                case 1:
-                    inventory.addProduct(promptForProduct(scanner));
-                    break;
-                case 2:
-                    System.out.print("Enter product ID to update stock: ");
-                    id = scanner.nextInt();
-                    System.out.print("Enter new stock count: ");
-                    int stock = scanner.nextInt();
-                    inventory.updateStock(id, stock);
-                    break;
-                case 3:
-                    System.out.print("Enter product ID to remove: ");
-                    id = scanner.nextInt();
-                    inventory.removeProduct(id);
-                    break;
-                case 4:
-                    inventory.displayInventory();
-                    break;
-                case 5:
-                    inventory.saveToFile("inventory.txt");
-                    break;
-                case 6:
-                    inventory.loadFromFile("inventory.txt");
-                    break;
-                case 7:
-                    System.out.println("Exiting Inventory Management System.");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                switch (choice) {
+                    case 1:
+                        scanner.nextLine();
+                        inventory.addProduct(promptForProduct(scanner));
+                        break;
+                    case 2:
+                        System.out.print("Enter product ID to update stock: ");
+                        while (!scanner.hasNextInt()) {
+                            System.out.println("Invalid input. Please enter an integer.");
+                            scanner.next();
+                        }
+                        id = scanner.nextInt();
+                        System.out.print("Enter new stock count: ");
+                        while (!scanner.hasNextInt()) {
+                            System.out.println("Invalid input. Please enter an integer.");
+                            scanner.next();
+                        }
+                        stock = scanner.nextInt();
+                        scanner.nextLine();
+                        inventory.updateStock(id, stock);
+                        break;
+                    case 3:
+                        System.out.print("Enter product ID to remove: ");
+                        while (!scanner.hasNextInt()) {
+                            System.out.println("Invalid input. Please enter an integer.");
+                            scanner.next();
+                        }
+                        id = scanner.nextInt();
+                        scanner.nextLine();
+                        inventory.removeProduct(id);
+                        break;
+                    case 4:
+                        inventory.displayInventory();
+                        break;
+                    case 5:
+                        inventory.saveToFile("inventory.txt");
+                        break;
+                    case 6:
+                        inventory.loadFromFile("inventory.txt");
+                        break;
+                    case 7:
+                        System.out.println("Exiting Inventory Management System.");
+                        scanner.close();
+                        return;
+                    default:
+                        scanner.nextLine();
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } else {
+                scanner.next();
+                System.out.println("Invalid choice. Please enter a number.");
             }
         }
     }
+
+
 
     private static Product promptForProduct(Scanner scanner) {
         int id;
